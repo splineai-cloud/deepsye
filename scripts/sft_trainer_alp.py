@@ -104,11 +104,12 @@ if script_args.load_in_8bit and script_args.load_in_4bit:
     raise ValueError("You can't load the model in 8 bits and 4 bits at the same time")
 elif script_args.load_in_8bit or script_args.load_in_4bit:
     quantization_config = BitsAndBytesConfig(
-        load_in_8bit=script_args.load_in_8bit, load_in_4bit=script_args.load_in_4bit
+        load_in_8bit=script_args.load_in_8bit 
+        load_in_4bit=script_args.load_in_4bit
     )
     # Copy the model to each device
     device_map = {"": Accelerator().local_process_index}
-    torch_dtype = torch.bfloat16
+    torch_dtype = torch.float16
 else:
     device_map = None
     quantization_config = None
