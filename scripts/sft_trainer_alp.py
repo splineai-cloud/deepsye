@@ -73,8 +73,7 @@ from datasets import Dataset
 from google.cloud import storage
 import io
 import pandas as pd
-bucket_name = "fhirfly"
-#blob_name = "autism-nov-o10.csv"
+bucket_name = "fhirfly" 
 blob_name = "autism-nov-compact-removeQ.csv"
 storage_client = storage.Client()
 bucket = storage_client.bucket(bucket_name)
@@ -92,20 +91,20 @@ dataset1 = Dataset.from_pandas(df)
 dataset=dataset1.train_test_split(test_size=0.1)
 
 def create_prompt_instruction(sample):
-   return f"""### Instruction:
-   {sample['instruction']}
+   return sample["input_ids"] = f"""### Instruction:
+{sample['instruction']}
 
-   ### Input
-   {sample['input']}
+### Input
+{sample['input']}
 
-   ### Response:
+### Response:
    """
 
 #dataset = load_dataset(script_args.dataset_name, split="train[:20000]")
 #dataset = dataset.train_test_split(test_size=0.1)
 
-dataset = dataset.map(create_prompt_instruction, num_proc=4, remove_columns=["instruction", "input", "response"])
-
+dataset = dataset.map(create_prompt_instruction, num_proc=4, remove_columns=["instruction", "input", "output"])
+print("INFO: dataset ready") 
 # Step 2: Load the model
 if script_args.load_in_8bit and script_args.load_in_4bit:
     raise ValueError("You can't load the model in 8 bits and 4 bits at the same time")
