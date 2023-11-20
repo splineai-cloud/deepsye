@@ -91,14 +91,7 @@ dataset1 = Dataset.from_pandas(df)
 dataset=dataset1.train_test_split(test_size=0.1)
 
 def create_prompt_instruction(sample):
-   sample["text"] = f"""### Instruction:
-{sample['instruction']}
-
-### Input
-{sample['input']}
-
-### Response:
-   """
+   sample["text"] = f"#Instruction:\n{sample['instruction']}\nInput:\n{sample['input']}\nResponse: "
    return sample
 
 #dataset = load_dataset(script_args.dataset_name, split="train[:20000]")
